@@ -1,49 +1,115 @@
 <script>
-  import Uppy from '@uppy/core';
-  import {Dashboard} from '@uppy/svelte';
-  import Tus from '@uppy/tus'; // Example of importing a plugin
-  import XHRUpload from '@uppy/xhr-upload'; // Example of another plugin
-    import { onMount } from 'svelte';
+	import Uppy, { debugLogger } from "@uppy/core";
+import Dashboard from "@uppy/dashboard";
+import RemoteSources from "@uppy/remote-sources";
+import Webcam from "@uppy/webcam";
+import ScreenCapture from "@uppy/screen-capture";
+import GoldenRetriever from "@uppy/golden-retriever";
+import Tus from "@uppy/tus";
+import AwsS3 from "@uppy/aws-s3";
+import AwsS3Multipart from "@uppy/aws-s3-multipart";
+import XHRUpload from "@uppy/xhr-upload";
+import ImageEditor from "@uppy/image-editor";
+import DropTarget from "@uppy/drop-target";
+import Audio from "@uppy/audio";
+import Compressor from "@uppy/compressor";
 
-  let uppy;
-    
-  onMount(async () => {
-    uppy = new Uppy({
-      plugins: [
-        Dashboard,
-        Tus, // Add plugins as needed
-        XHRUpload,
-        // ...other plugins
-      ],
-      debug: true, // Enable debug logging for troubleshooting
-      // Configure Uppy options
-      uppyDashboard: {
+import "@uppy/core/dist/style.css";
+import "@uppy/dashboard/dist/style.css";
+import "@uppy/audio/dist/style.css";
+import "@uppy/screen-capture/dist/style.css";
+import "@uppy/image-editor/dist/style.css";
+    import { onMount } from "svelte";
+
+const UPLOADER = "tus";
+const COMPANION_URL = "http://companion.uppy.io";
+const companionAllowedHosts = [];
+const TUS_ENDPOINT = "https://tusd.tusdemo.net/files/";
+const XHR_ENDPOINT = "";
+
+const RESTORE = false;
+let uppyDashboard ;
+onMount(()=>{
+    uppyDashboard = new Uppy({ logger: debugLogger })
+      .use(Dashboard, {
         inline: true,
-        target: "#uppy", // Mount to this element within the component
+        target: "#app",
         showProgressDetails: true,
         proudlyDisplayPoweredByUppy: true
-      },
-      // Configure other plugins as needed
-    });
-    console.log(uppy)
-    uppy.on('upload-success', (file) => {
-      // Handle successful upload (e.g., send a request to your server)
-      console.log('Upload successful:', file);
-    });
+      })
+      .use(RemoteSources, {
+        companionUrl: COMPANION_URL,
+        sources: [
+          "Box",
+          "Dropbox",
+          "Facebook",
+          "GoogleDrive",
+          "Instagram",
+          "OneDrive",
+          "Unsplash",
+          "Url"
+        ],
+        companionAllowedHosts
+      })
+      .use(Webcam, {
+        target: Dashboard,
+        showVideoSourceDropdown: true,
+        showRecordingLength: true
+      })
+      .use(Audio, {
+        // target: Dashboard,
+        target: '#audio',
+        showRecordingLength: true
+      })
+      .use(ScreenCapture, { target: Dashboard })
+      .use(ImageEditor, { target: Dashboard })
+      .use(DropTarget, {
+        target: document.body
+      })
+      .use(Compressor);
 
-    uppy.mount('#uppy');
-  });
+      switch (UPLOADER) {
+        case "tus":
+          uppyDashboard.use(Tus, { endpoint: TUS_ENDPOINT, limit: 6 });
+          break;
+        case "s3":
+          uppyDashboard.use(AwsS3, { companionUrl: COMPANION_URL, limit: 6 });
+          break;
+        case "s3-multipart":
+          uppyDashboard.use(AwsS3Multipart, {
+            companionUrl: COMPANION_URL,
+            limit: 6
+          });
+          break;
+        case "xhr":
+          uppyDashboard.use(XHRUpload, {
+            endpoint: XHR_ENDPOINT,
+            limit: 6,
+            bundle: true
+          });
+          break;
+        default:
+      }
+      
+      if (RESTORE) {
+        uppyDashboard.use(GoldenRetriever, { serviceWorker: true });
+      }
+      
+      window.uppy = uppyDashboard;
+      
+      uppyDashboard.on("complete", (result) => {
+        if (result.failed.length === 0) {
+          console.log("Upload successful");
+        } else {
+          console.warn("Upload failed");
+        }
+        console.log("successful files:", result.successful);
+        console.log("failed files:", result.failed);
+      });
+})
+
 </script>
 
-
-
-
-<h1 class="text-center font-bold text-3xl p-5">Uppy with SvelteKit</h1>
-
-<div id="uppy"></div>
-
-<style>
-  @import '@uppy/core/dist/style.css';
-  @import '@uppy/dashboard/dist/style.css';
-  /* Import styles for other plugins as needed */
-</style>
+<div id="app">
+    <div id="audio"  >audio</div>
+</div>

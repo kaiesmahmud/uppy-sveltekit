@@ -57,8 +57,8 @@ onMount(()=>{
         showRecordingLength: true
       })
       .use(Audio, {
-        // target: Dashboard,
-        target: '#audio',
+        target: Dashboard,
+        // target: '#audio',
         showRecordingLength: true
       })
       .use(ScreenCapture, { target: Dashboard })
@@ -107,9 +107,18 @@ onMount(()=>{
         console.log("failed files:", result.failed);
       });
 })
-
+$: viewUppy = false ;
+const handleViewUppy = () =>{ 
+  viewUppy = !viewUppy
+  console.log(viewUppy)
+  }
 </script>
+<div class="w-full flex items-center justify-center">
+  <button on:click={handleViewUppy} class="bg-green-400 p-5 rounded m-10">Upload Files</button>
+</div>
 
-<div id="app">
-    <div id="audio"  >audio</div>
+<div class={`${ viewUppy ? " flex ":" hidden "} z-30 backdrop-blur-lg min-h-[100vh] flex-col items-center justify-center fixed top-0 left-0 w-full h-full `}>
+  <button on:click={handleViewUppy} class="bg-pink-400 p-3 font-bold rounded m-5">Close</button>
+  <div id="app"  />
+
 </div>

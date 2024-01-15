@@ -1,0 +1,75 @@
+.uppy-Root {
+    @apply bg-slate-900 !important;
+
+}
+.uppy-Dashboard-inner,.uppy-Dashboard-AddFiles,.uppy-DashboardTab{
+    @apply border-none !important;
+}
+.uppy-Dashboard-inner{
+    @apply h-[90vh] !important;
+}
+.uppy-Dashboard-innerWrap{
+    @apply bg-gray-700 border-none shadow-none text-white !important;
+}
+.uppy-Dashboard-AddFiles-info{
+    @apply hidden !important;
+}
+
+.showList .uppy-Dashboard-AddFiles-list  {
+    @apply absolute top-0 right-0 w-auto flex justify-start items-start bg-slate-900 rounded !important ;
+}
+ 
+.uppy-DashboardTab{
+    @apply w-[100%] !important;
+}
+.uppy-u-reset ,.uppy-c-btn, .uppy-DashboardTab-btn{
+    @apply hover:bg-transparent p-3 rounded w-full !important;
+}
+.uppy-Dashboard-AddFiles-list .uppy-c-btn {
+    @apply justify-start !important  ;
+}
+.uppy-DashboardTab-inner{
+    @apply bg-slate-800 !important ;
+}
+.hideList .uppy-Dashboard-AddFiles-list{
+    @apply hidden !important ;
+}
+.uppy-DashboardTab-name{
+    @apply w-full text-start !important;
+}
+
+
+/* =========== panel ========== */
+.uppy-DashboardContent-panel,.uppy-DashboardContent-bar ,.uppy-ProviderBrowser,
+ .uppy-ProviderBrowser-viewType--list,
+ .uppy-ProviderBrowser-headerBar ,.uppy-SearchProvider{
+    @apply bg-slate-800 !important;
+}
+
+.uppy-SearchProvider{
+    @apply p-3 flex flex-col gap-3 !important;
+}
+.uppy-u-reset.uppy-c-textInput.uppy-SearchProvider-input{
+    @apply bg-gray-900 !important;
+}
+.uppy-u-reset .uppy-ProviderBrowser-searchFilterReset{
+    @apply w-10 !important;
+}
+.uppy-c-icon{
+    @apply max-w-5 !important;
+}
+.uppy-c-icon .uppy-ProviderBrowser-searchFilterIcon{
+    @apply text-xl !important;
+}
+/* ==========Icon ============= */
+
+.uppy-Provider-breadcrumbsIcon{
+    @apply w-20 !important;
+}
+
+
+/* ==========Drag Drop ============== */
+.uppy-Dashboard-AddFiles-title .uppy-Dashboard-AddFiles .uppy-u-reset .uppy-c-btn .uppy-Dashboard-browse{
+    @apply border-none hover:border-none hover:shadow-none hover:bg-slate-900 !important;
+}
+ 

@@ -8,6 +8,7 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
+		"@iconify/svelte": "^3.1.6",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-vercel": "^4.0.3",
 		"@sveltejs/kit": "^2.0.0",
@@ -27,6 +28,8 @@
 		"@uppy/core": "^3.8.0",
 		"@uppy/dashboard": "^3.7.1",
 		"@uppy/drop-target": "^2.0.2",
+		"@uppy/facebook": "^3.2.0",
+		"@uppy/file-input": "^3.0.4",
 		"@uppy/golden-retriever": "^3.1.1",
 		"@uppy/image-editor": "^2.4.0",
 		"@uppy/remote-sources": "^1.1.0",
